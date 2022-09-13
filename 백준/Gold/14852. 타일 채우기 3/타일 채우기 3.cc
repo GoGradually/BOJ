@@ -10,19 +10,17 @@ void solve(){
     cin>>n;
     dp[0] = 1;
     dp[1] = 2;
-    sum[0] = 1;
-    sum[1] = 3;
+    sum[0] = 2;
+    sum[1] = 6;
     for (int i = 2; i<=n; i++) {
         dp[i] = (dp[i-1]*2 + dp[i-2] * 3)%MOD;
-        dp[i] = (dp[i] + 2*sum[i-3])%MOD;
-        sum[i] = (dp[i] + sum[i-1])%MOD;
+        dp[i] = (dp[i] + sum[i-3])%MOD;
+        sum[i] = (dp[i]*2 + sum[i-1])%MOD;
     }
-    cout<<dp[n]%MOD<<'\n';
+    cout<<dp[n]<<'\n';
 }
 
 int main(int argc, const char * argv[]) {
-    ios_base::sync_with_stdio(false);
-    cin.tie(NULL);
     int t;
     t = 1;
     while(t--) solve();

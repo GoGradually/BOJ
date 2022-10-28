@@ -6,30 +6,21 @@
 using namespace std;
 
 ll dp[101][10001];
-bool ok[101][10001];
 
 void solve() {
-    int n, m;
-    cin >> n >> m;
-    vector<int> arr(n), cost(n);
-    for (int i = 0; i < n; i++) {
-        cin >> arr[i];
-    }
-    for (int i = 0; i < n; i++) {
-        cin >> cost[i];
-    }
+    int n = 100, m = 100;
+    cin>>n>>m;
+    vector<int> arr(n);
+    vector<int> cost(n);
+    for(int i = 0; i<n; i++) cin>>arr[i];
+    for(int i = 0; i<n; i++) cin>>cost[i];
     memset(dp, 0, sizeof(dp));
-    memset(ok, false, sizeof(ok));
-    ok[0][0] = true;
     for (int i = 0; i < n; i++) {
         for (int j = 0; j <= 10000; j++) {
-            if (ok[i][j]) {
-                ok[i + 1][j] = true;
-                dp[i + 1][j] = max(dp[i + 1][j], dp[i][j]);
-                ok[i + 1][j + cost[i]] = true;
+            if (j + cost[i] <= 10000)
                 dp[i + 1][j + cost[i]] =
-                    max(dp[i][j] + arr[i], dp[i + 1][j + cost[i]]);
-            }
+                    max(dp[i][j] + arr[i], dp[i][j + cost[i]]);
+            dp[i + 1][j] = max(dp[i][j], dp[i + 1][j]);
         }
     }
     for (int i = 0; i < 10001; i++) {

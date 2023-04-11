@@ -1,24 +1,7 @@
-#include <algorithm>
-#include <array>
-#include <cstring>
-#include <deque>
-#include <iostream>
-#include <map>
-#include <queue>
-#include <set>
-#include <stack>
-#include <string>
-#include <vector>
-#define MOD 1000000007
-#define ll long long
-#define INF 1e9 + 10
-#define lINF 1e18 + 10
-
+#include <bits/stdc++.h>
 using namespace std;
 
-vector<int> g[200001];
-
-void Solve() {
+int main() {
     int n, l;
     cin >> n >> l;
     int ans = 1;
@@ -65,15 +48,8 @@ void Solve() {
             val--;
             break;
         }
-        if (val > ans) ans = val;
+        if(ans < val) ans = val;
     }
     cout << ans << '\n';
-}
-
-int main() {
-    ios_base::sync_with_stdio(false);
-    cin.tie(nullptr);
-    int t = 1;
-    while (t--) Solve();
     return 0;
 }

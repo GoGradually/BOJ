@@ -1,104 +1,73 @@
-#include <algorithm>
-#include <array>
-#include <cstring>
-#include <deque>
-#include <iostream>
-#include <map>
-#include <queue>
-#include <set>
-#include <stack>
-#include <string>
-#include <vector>
-#define MOD 998244353
+#include <bits/stdc++.h>
+#define MOD 1000000007
 #define ll long long
 #define INF 1e9 + 10
 #define lINF 1e18 + 10
 
 using namespace std;
 
-vector<pair<int, int>> arr;
-vector<ll> xUp(1, 0), xDown(1, 0), yUp(1, 0), yDown(1, 0);
-
-bool ycmp(pair<int, int> &a, pair<int, int> &b) {
-    if (a.second == b.second) {
-        return a.first < b.first;
-    }
+bool comp(pair<ll, ll> &a, pair<ll, ll> &b) {
+    if (a.second == b.second) return a.first < b.first;
     return a.second < b.second;
 }
-void solve() {
+
+void Solve() {
     int n;
     cin >> n;
-    ll oneFence = 0;
-    ll l = INF, r = 0, u = 0, d = INF;
+    vector<pair<ll, ll>> arr(n);
     for (int i = 0; i < n; i++) {
-        ll a, b;
-        cin >> a >> b;
-        arr.push_back({a, b});
-        l = min(l, a);
-        r = max(r, a);
-        u = max(u, b);
-        d = min(d, b);
+        cin >> arr[i].first >> arr[i].second;
     }
-    oneFence = (r - l) * (u - d);
     sort(arr.begin(), arr.end());
-    l = INF, r = 0, u = 0, d = INF;
-    for (int i = 0; i < n; i++) {
-        ll a, b;
-        tie(a, b) = arr[i];
-        l = min(l, a);
-        r = max(r, a);
-        u = max(u, b);
-        d = min(d, b);
-        ll val = (r - l) * (u - d);
-        xUp.push_back(val);
+    vector<ll> maxF(n, 0), maxG(n, 0), minF(n, INF), minG(n, INF);
+    maxF[0] = arr[0].second;
+    minF[0] = arr[0].second;
+    for (int i = 1; i < n; i++) {
+        maxF[i] = max(maxF[i - 1], arr[i].second);
+        minF[i] = min(minF[i - 1], arr[i].second);
     }
-    l = INF, r = 0, u = 0, d = INF;
-    for (int i = n - 1; i >= 0; i--) {
-        ll a, b;
-        tie(a, b) = arr[i];
-        l = min(l, a);
-        r = max(r, a);
-        u = max(u, b);
-        d = min(d, b);
-        ll val = (r - l) * (u - d);
-        xDown.push_back(val);
+    maxG[n - 1] = arr[n - 1].second;
+    minG[n - 1] = arr[n - 1].second;
+    for (int i = n - 2; i >= 0; i--) {
+        maxG[i] = max(maxG[i + 1], arr[i].second);
+        minG[i] = min(minG[i + 1], arr[i].second);
     }
-    sort(arr.begin(), arr.end(), ycmp);
+    ll val = (arr[n - 1].first - arr[0].first) * (maxF[n - 1] - minF[n - 1]);
+    ll ret1 = val;
+    for (int i = 0; i < n - 1; i++) {
+        ll temp =
+            (arr[i].first - arr[0].first) * (maxF[i] - minF[i]) +
+            (arr[n - 1].first - arr[i + 1].first) * (maxG[i + 1] - minG[i + 1]);
+        if (temp < ret1) ret1 = temp;
+    }
 
-    l = INF, r = 0, u = 0, d = INF;
-    for (int i = 0; i < n; i++) {
-        ll a, b;
-        tie(a, b) = arr[i];
-        l = min(l, a);
-        r = max(r, a);
-        u = max(u, b);
-        d = min(d, b);
-        ll val = (r - l) * (u - d);
-        yUp.push_back(val);
+    sort(arr.begin(), arr.end(), comp);
+    maxF[0] = arr[0].first;
+    minF[0] = arr[0].first;
+    for (int i = 1; i < n; i++) {
+        maxF[i] = max(maxF[i - 1], arr[i].first);
+        minF[i] = min(minF[i - 1], arr[i].first);
     }
-    l = INF, r = 0, u = 0, d = INF;
-    for (int i = n - 1; i >= 0; i--) {
-        ll a, b;
-        tie(a, b) = arr[i];
-        l = min(l, a);
-        r = max(r, a);
-        u = max(u, b);
-        d = min(d, b);
-        ll val = (r - l) * (u - d);
-        yDown.push_back(val);
+    maxG[n - 1] = arr[n - 1].first;
+    minG[n - 1] = arr[n - 1].first;
+    for (int i = n - 2; i >= 0; i--) {
+        maxG[i] = max(maxG[i + 1], arr[i].first);
+        minG[i] = min(minG[i + 1], arr[i].first);
     }
-    ll ans = 0;
-    for (int i = 0; i <= n; i++) {
-        ans = max(ans, oneFence - xUp[i] - xDown[n - i]);
-        ans = max(ans, oneFence - yUp[i] - yDown[n - i]);
+    ll ret2 = val;
+    for (int i = 0; i < n - 1; i++) {
+        ll temp = (arr[i].second - arr[0].second) * (maxF[i] - minF[i]) +
+            (arr[n - 1].second - arr[i + 1].second) *
+            (maxG[i + 1] - minG[i + 1]);
+        if (temp < ret2) ret2 = temp;
     }
-    cout << ans << '\n';
+    cout << max(val - ret1, val - ret2) << '\n';
 }
 
 int main() {
     ios_base::sync_with_stdio(false);
     cin.tie(nullptr);
     int t = 1;
-    while (t--) solve();
+    while (t--) Solve();
     return 0;
 }

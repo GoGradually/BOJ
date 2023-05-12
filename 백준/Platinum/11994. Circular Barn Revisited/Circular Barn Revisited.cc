@@ -11,7 +11,7 @@ using mint = atcoder::modint998244353;
 using namespace std;
 
 deque<ll> arr;
-ll dp[100][100][8];
+ll dp[100][101][8];
 void Solve() {
     int n, k;
     cin >> n >> k;
@@ -20,8 +20,8 @@ void Solve() {
         cin >> temp;
         arr.push_back(temp);
     }
-    if(n<=k){
-        cout<<0<<'\n';
+    if (n <= k) {
+        cout << 0 << '\n';
         return;
     }
     reverse(arr.begin(), arr.end());

@@ -11,11 +11,11 @@ using namespace std;
 void Solve() {
     int n;
     cin >> n;
-    vector<int> arr(n);
+    vector<ll> arr(n);
     for (int i = 0; i < n; i++) {
         cin >> arr[i];
     }
-    vector<int> cnt(n, 0);
+    vector<ll> cnt(n, 0);
     for (int i = 1; i < n; i++) {
         cnt[i] = cnt[i - 1];
         int before = arr[i - 1];
@@ -35,7 +35,7 @@ void Solve() {
             }
         }
     }
-    int ans = 0;
+    ll ans = 0;
     for (int i = 0; i < n; i++) {
         ans += cnt[i];
     }

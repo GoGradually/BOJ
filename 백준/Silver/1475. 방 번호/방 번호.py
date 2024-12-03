@@ -6,12 +6,11 @@ while a != 0:
     numAppear[a % 10] += 1
     a = a // 10
 
-sum = numAppear[6] + numAppear[9]
-if sum % 2 == 1:
-    numAppear[6] = sum // 2 + 1
-    numAppear[9] = sum // 2
-else:
-    numAppear[6] = sum // 2
-    numAppear[9] = sum // 2
+replace = (numAppear[6] + numAppear[9] + 1)//2
+numAppear[6] = replace
+numAppear[9] = replace
 
 print(max(numAppear))
+
+
+

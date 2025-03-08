@@ -2,13 +2,10 @@ a = int(input())
 b = int(input())
 c = int(input())
 
-product = a * b * c
+cal = a * b * c
 
-numAppear = [0 for i in range(10)]
-
-while product != 0:
-    numAppear[product%10] += 1
-    product = product // 10
+cal_list = list(str(cal))
 
 for i in range(10):
-    print(numAppear[i])
+    count = cal_list.count(str(i))
+    print(count)
